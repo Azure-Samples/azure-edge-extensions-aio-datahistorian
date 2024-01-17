@@ -1,0 +1,29 @@
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: data-historian-spc
+  namespace: ${aio_cluster_namespace}
+spec:
+  provider: "azure"
+  secretObjects:
+    - secretName: data-historian-secret
+      type: Opaque
+      data:
+        - objectName: influxdb-admin-password
+          key: admin-password
+        - objectName: influxdb-admin-token
+          key: admin-token
+  parameters:
+    usePodIdentity: "false"
+    keyvaultName: "${key_vault_name}"
+    objects: |
+      array:
+        - |
+          objectName: influxdb-admin-password
+          objectType: secret
+          objectVersion: ""
+        - |
+          objectName: influxdb-admin-token
+          objectType: secret
+          objectVersion: ""
+    tenantId: ${tenant_id}

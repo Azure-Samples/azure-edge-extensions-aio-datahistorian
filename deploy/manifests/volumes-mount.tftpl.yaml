@@ -1,0 +1,13 @@
+volumes:
+  - name: "akv-secrets-store"
+    csi:
+      driver: "secrets-store.csi.k8s.io"
+      readOnly: true
+      volumeAttributes:
+        secretProviderClass: "data-historian-spc"
+      nodePublishSecretRef:
+        name: "aio-secrets-store-creds"
+mountPoints:
+  - name: "akv-secrets-store"
+    mountPath: "/mnt/secrets-store"
+    readOnly: true
