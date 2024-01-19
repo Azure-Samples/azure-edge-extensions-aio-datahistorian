@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: telegraf
+  labels:
+    app.kubernetes.io/name: telegraf
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: http-listener-v2
+    - port: 8888
+      targetPort: 8888
+      name: health
+  selector:
+    app.kubernetes.io/name: telegraf
