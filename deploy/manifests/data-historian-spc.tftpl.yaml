@@ -6,6 +6,13 @@ metadata:
 spec:
   provider: "azure"
   secretObjects:
+    - secretName: grafana-secret
+      type: Opaque
+      data:
+        - objectName: grafana-admin-password
+          key: admin-password
+        - objectName: grafana-admin-user
+          key: admin-user
     - secretName: data-historian-secret
       type: Opaque
       data:
@@ -24,6 +31,14 @@ spec:
           objectVersion: ""
         - |
           objectName: influxdb-admin-token
+          objectType: secret
+          objectVersion: ""
+        - |
+          objectName: grafana-admin-password
+          objectType: secret
+          objectVersion: ""
+        - |
+          objectName: grafana-admin-user
           objectType: secret
           objectVersion: ""
     tenantId: ${tenant_id}

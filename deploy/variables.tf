@@ -132,3 +132,15 @@ variable "should_grant_access_to_create_secrets" {
   type        = bool
   default     = false
 }
+
+variable "grafana_admin_password" {
+  description = "(Optional) The admin password for grafana. (Otherwise, generated and stored in key vault if enabled)"
+  type        = string
+  default     = null
+}
+
+variable "grafana_admin_user" {
+  description = "(Optional) The admin user name for grafana. (Otherwise, 'admin')"
+  type        = string
+  default     = "admin"
+}
