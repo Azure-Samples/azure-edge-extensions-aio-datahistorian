@@ -1,4 +1,5 @@
 resource "azapi_resource" "aio_targets_http_echo" {
+  count                     = var.should_deploy_http_echo_service ? 1 : 0
   schema_validation_enabled = false
   type                      = "Microsoft.IoTOperationsOrchestrator/Targets@2023-10-04-preview"
   name                      = "${var.name}-tgt-he"
@@ -47,4 +48,3 @@ resource "azapi_resource" "aio_targets_http_echo" {
     }
   })
 }
-

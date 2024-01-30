@@ -144,3 +144,9 @@ variable "grafana_admin_user" {
   type        = string
   default     = "admin"
 }
+
+variable "should_deploy_http_echo_service" {
+  description = "(Optional) Deploys an HTTP echo service for use with observing HTTP traffic. (Helps with debugging AIO Data Processor)"
+  type        = bool
+  default     = false
+}
