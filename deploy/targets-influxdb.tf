@@ -5,7 +5,7 @@ locals {
 resource "azapi_resource" "aio_targets_data_historian" {
   schema_validation_enabled = false
   type                      = "Microsoft.IoTOperationsOrchestrator/Targets@2023-10-04-preview"
-  name                      = "${var.name}-tgt-dh"
+  name                      = "datahistorian-influxdb"
   location                  = var.location
   parent_id                 = data.azurerm_resource_group.this.id
 

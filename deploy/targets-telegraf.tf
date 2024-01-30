@@ -5,7 +5,7 @@ locals {
 resource "azapi_resource" "aio_targets_telegraf" {
   schema_validation_enabled = false
   type                      = "Microsoft.IoTOperationsOrchestrator/Targets@2023-10-04-preview"
-  name                      = "${var.name}-tgt-tg"
+  name                      = "datahistorian-telegraf"
   location                  = var.location
   parent_id                 = data.azurerm_resource_group.this.id
 
