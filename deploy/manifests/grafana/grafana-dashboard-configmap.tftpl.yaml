@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-sample-dashboard
+  labels:
+    app.kubernetes.io/name: grafana
+data:
+  sample-dashboard.json: |+
+${grafana_sample_dashboard}
