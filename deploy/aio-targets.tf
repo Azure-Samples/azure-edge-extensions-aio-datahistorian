@@ -180,6 +180,13 @@ resource "azapi_resource" "aio_targets_telegraf" {
           }
         },
         {
+          name = "telegraf-pdb"
+          type = "yaml.k8s"
+          properties = {
+            resource = yamldecode(file("./manifests/telegraf/telegraf-pdb.tftpl.yaml"))
+          }
+        },
+        {
           name = "telegraf-configmap"
           type = "yaml.k8s"
           properties = {

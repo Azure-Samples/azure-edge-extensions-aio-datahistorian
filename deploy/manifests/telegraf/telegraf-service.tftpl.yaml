@@ -9,7 +9,10 @@ spec:
   ports:
     - port: 8080
       targetPort: 8080
-      name: http-listener-v2
+      name: generic
+    - port: 8081
+      targetPort: 8081
+      name: opcua
     - port: 8888
       targetPort: 8888
       name: health

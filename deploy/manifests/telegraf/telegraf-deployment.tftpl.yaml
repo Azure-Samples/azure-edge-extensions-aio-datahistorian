@@ -5,7 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/name: telegraf
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/name: telegraf
@@ -33,7 +33,9 @@ spec:
               value: default
           ports:
             - containerPort: 8080
-              name: http
+              name: generic
+            - containerPort: 8081
+              name: opcua
             - containerPort: 8888
               name: health
           volumeMounts:

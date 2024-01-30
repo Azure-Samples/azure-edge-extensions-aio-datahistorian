@@ -4,10 +4,10 @@ data "azapi_resource" "aio_dp" {
   parent_id = data.azurerm_resource_group.this.id
 }
 
-resource "azapi_resource" "aio_datahistorian_pipeline" {
+resource "azapi_resource" "aio_datahistorian_opcua_pipeline" {
   schema_validation_enabled = false
   type                      = "Microsoft.IoTOperationsDataProcessor/instances/pipelines@2023-10-04-preview"
-  name                      = "datahistorian"
+  name                      = "datahistorian-opcua"
   location                  = var.location
   parent_id                 = data.azapi_resource.aio_dp.id
 
@@ -20,7 +20,7 @@ resource "azapi_resource" "aio_datahistorian_pipeline" {
     properties = {
       enabled = true,
       input = {
-        displayName = "MQTT Topics"
+        displayName = "MQTT Topics - OPC UA Broker"
         type        = "input/mqtt@v1"
 
         authentication = {
@@ -38,7 +38,7 @@ resource "azapi_resource" "aio_datahistorian_pipeline" {
         }
         qos = 1
         topics = [
-          "aio/#"
+          "aio/data/opc.tcp/#"
         ]
         viewOptions = {
           position = {
@@ -48,18 +48,40 @@ resource "azapi_resource" "aio_datahistorian_pipeline" {
         }
 
         next = [
-          "telegraf"
+          "transformTelegraf"
         ]
       }
       stages = {
-        telegraf = {
-          displayName = "Telegraf HTTP Call Out"
+        transformTelegraf = {
+          displayName = "Transform - Telegraf OPC UA Payload"
+          type        = "processor/transform@v1",
+          next = [
+            "telegrafCallOut"
+          ]
+          viewOptions = {
+            position = {
+              x = 0
+              y = 224
+            }
+          }
+          expression = <<-EOT
+            .payload.payload = ([
+              .payload.payload | to_entries | .[] | {
+                CapabilityId: .key,
+                SourceTimestamp: .value.SourceTimestamp,
+                Value: .value.Value
+              }
+            ])
+          EOT
+        }
+        telegrafCallOut = {
+          displayName = "HTTP Call Out - Telegraf OPC UA Endpoint"
           type        = "processor/http@v1"
 
           authentication = {
             type = "none"
           }
-          url    = "http://telegraf:8080/payload"
+          url    = "http://telegraf:8081/opcua"
           method = "POST"
           request = {
             body = {
@@ -71,13 +93,13 @@ resource "azapi_resource" "aio_datahistorian_pipeline" {
           response = {
             body = {
               path = "."
-              type = "json"
+              type = "raw"
             }
           }
           viewOptions = {
             position = {
               x = 0,
-              y = 260
+              y = 416
             }
           }
           next = [
@@ -85,7 +107,8 @@ resource "azapi_resource" "aio_datahistorian_pipeline" {
           ]
         }
         output = {
-          displayName = "MQTT Telegraf Output"
+          displayName = "MQ Output - Telegraf Response"
+          description = "Telegraf returns empty if successful"
           type        = "output/mqtt@v1"
 
           authentication = {
@@ -94,18 +117,18 @@ resource "azapi_resource" "aio_datahistorian_pipeline" {
           broker = "tls://aio-mq-dmqtt-frontend:8883"
           format = {
             path = "."
-            type = "json"
+            type = "raw"
           }
           qos = 1
           topic = {
             type  = "static",
-            value = "telegraf/response"
+            value = "telegraf/opcua/response"
           }
           userProperties = []
           viewOptions = {
             position = {
               x = 0,
-              y = 440
+              y = 624
             }
           }
         }
