@@ -1,6 +1,6 @@
 # Azure Edge Extensions AIO Data Historian
 
-InfluxDB based Data Historian, deployed and managed my Azure IoT Operations.
+InfluxDB-based Data Historian, deployed and managed by Azure IoT Operations.
 
 ## Features
 
