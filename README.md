@@ -2,6 +2,10 @@
 
 InfluxDB-based Data Historian, deployed and managed by Azure IoT Operations.
 
+> [!WARNING]  
+> This Azure Edge Extensions has confirmed compatiblity with the 0.5.0 preview version of Azure IoT Operations. Please review
+> [AIO release notes](https://github.com/Azure/azure-iot-operations/releases) for current preview version releases.
+
 ## Features
 
 This project framework provides the following features:
